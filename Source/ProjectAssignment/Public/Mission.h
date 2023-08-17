@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "Engine/DataTable.h"
 #include "Mission.generated.h"
 
 
@@ -27,7 +27,7 @@ enum class EMissionType
 };
 
 USTRUCT(BlueprintType)
-struct FMission 
+struct FMission : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -42,4 +42,4 @@ struct FMission
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
         int MissionValue;
-};
+};  

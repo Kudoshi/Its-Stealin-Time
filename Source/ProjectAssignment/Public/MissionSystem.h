@@ -1,23 +1,24 @@
-//// Fill out your copyright notice in the Description page of Project Settings.
-//
-//#pragma once
-//
-//#include "Engine/DataTable.h"
-//#include "CoreMinimal.h"
-////#include "UMissionSystem.generated.h"
-//
-///**
-// * 
-// */
-//UCLASS()
-//class PROJECTASSIGNMENT_API UMissionSystem : public UObject
-//{
-////	GENERATED_BODY()
-////		 
-////public:
-////	MissionSystem();
-////
-////	UFUNCTION(BlueprintCallable)
-////	static void ReadMissionTable();
-//
-//};
+﻿#pragma once
+
+#include "CoreMinimal.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Mission.h"
+#include "MissionSystem.generated.h"
+
+UCLASS()
+class PROJECTASSIGNMENT_API UMissionSystem : public UGameInstanceSubsystem
+{
+	GENERATED_BODY()
+
+public:
+	UMissionSystem();
+	UFUNCTION(BlueprintCallable)
+	FMission GetMissionDataByRow(FName RowName);
+
+private:
+	UDataTable* m_MissionDataTable;
+	
+};
+
+
+
