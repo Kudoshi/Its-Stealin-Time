@@ -39,8 +39,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool CheckDoActionMission(FName ActionName);
+
+	UFUNCTION(BlueprintCallable)
+	void RegisterHUDDisplay(UObject* uObject);
 private:
 	TSoftObjectPtr<UDataTable> LevelMissionTable;
 	TArray<FMission> CurrentLevelMission;
-	
+	TSoftObjectPtr<UObject> HUDDisplay;
+
+	void UpdateMissionDisplay() const;
 };

@@ -3,6 +3,8 @@
 #include <string>
 
 #include "ItemStruct.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Misc/OutputDeviceNull.h"
 
 
 UMissionManager::UMissionManager()
@@ -30,10 +32,9 @@ bool UMissionManager::InitializeLevelMissionInStage(FName Level)
 
 bool UMissionManager::DeinitializeLevelMissionInStage()
 {
-	if (CurrentLevelMission.IsEmpty())
-		return false;
-	
 	CurrentLevelMission = TArray<FMission>();
+	HUDDisplay = nullptr;
+	
 	return true;
 }
 
@@ -64,7 +65,7 @@ bool UMissionManager::CheckStealItem(FGameItem gameItem)
 			mission.MissionObjective.IsEqual(gameItem.itemName))
 		{
 			mission.Completed = true;
-			// Ping update display
+			UpdateMissionDisplay();
 			return true;
 		}
 	}
@@ -83,12 +84,31 @@ bool UMissionManager::CheckDoActionMission(FName ActionName)
 		if (mission.MissionObjective.IsEqual(ActionName))
 		{
 			mission.Completed = true;
+			UpdateMissionDisplay();
 			return true;
 		}
 	}
+
+
+	
 	// If not found any matching mission
 	return false;
 }
+
+void UMissionManager::RegisterHUDDisplay(UObject* uObject)
+{
+	HUDDisplay = uObject;
+}
+
+void UMissionManager::UpdateMissionDisplay() const
+{
+	if (!HUDDisplay)
+		return;
+	
+	FOutputDeviceNull ar;
+	HUDDisplay->CallFunctionByNameWithArguments(TEXT("UpdateMissionDisplay"), ar, nullptr, true);
+}
+
 
 
 
