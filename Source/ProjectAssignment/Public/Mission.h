@@ -27,7 +27,7 @@ enum class EMissionType
 };
 
 USTRUCT(BlueprintType)
-struct FMission : public FTableRowBase
+struct FMission
 {
     GENERATED_BODY()
 
@@ -38,8 +38,23 @@ struct FMission : public FTableRowBase
         FString MissionDescription;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-        FString MissionObjective;
+        FName MissionObjective;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
         int MissionValue;
+
+    UPROPERTY(BlueprintReadWrite)
+        bool Completed = false;
+
+    
+};
+
+USTRUCT(BlueprintType)
+struct FLevelMission : public FTableRowBase
+{
+    GENERATED_BODY()
+    
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TArray<FMission> LevelMissionList;
+
 };  
