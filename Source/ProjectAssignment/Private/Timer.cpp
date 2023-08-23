@@ -15,6 +15,8 @@ ATimer::ATimer()
 void ATimer::BeginPlay()
 {
 	Super::BeginPlay();
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this,&ATimer::CountDown,1.f,true,0.0);
 	
 }
 
@@ -30,5 +32,31 @@ void ATimer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATimer::CountDown()
+{
+	if(Seconds != 0)
+	{
+		Seconds = Seconds-1;
+	}
+
+	else
+	{
+		{
+			if(Minutes ==0)
+			{
+				//Do things here
+			}
+
+			else
+			{
+				{
+					Minutes = Minutes-1;
+					Seconds = 59;
+				}
+			}
+		}
+	}
 }
 
