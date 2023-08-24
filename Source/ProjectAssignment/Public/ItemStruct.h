@@ -31,21 +31,6 @@ enum ItemCategoryEnum
 	PLAYER_ITEM UMETA(DisplayName = "PLAYER_ITEM"),
 
 };
-//
-//USTRUCT(BlueprintType)
-//struct FBook
-//{
-//	GENERATED_USTRUCT_BODY()
-//
-//	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-//		FString name;
-//	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-//		int numberofPages;
-//	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-//		float rating;
-//};
-
-
 
 USTRUCT(BlueprintType)
 struct FGameItem
@@ -53,7 +38,7 @@ struct FGameItem
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		FString itemName;
+		FName itemName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 		int itemValue;
