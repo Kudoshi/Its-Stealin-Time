@@ -4,6 +4,7 @@
 
 #include "ItemStruct.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Logging/StructuredLog.h"
 #include "Misc/OutputDeviceNull.h"
 
 
@@ -11,7 +12,6 @@ UMissionManager::UMissionManager()
 {
 	this->LevelMissionTable = LoadObject<UDataTable>(nullptr,
 		TEXT("DataTable'/Game/DataTable/LevelMissionTable.LevelMissionTable'"));
-
 }
 
 TArray<FMission> UMissionManager::GetMissionDataByRow(FName RowName)
@@ -46,8 +46,12 @@ TArray<FMission> UMissionManager::GetCurrentLevelMission()
 
 bool UMissionManager::CheckStealItem(FGameItem gameItem)
 {
-	for (FMission mission : CurrentLevelMission)
+	bool missionAccomplished = false;
+	
+	for (int m = 0; m < CurrentLevelMission.Num(); m++)
 	{
+		FMission mission = CurrentLevelMission[m];
+		
 		if (mission.Completed)
 			continue;
 		
@@ -56,8 +60,7 @@ bool UMissionManager::CheckStealItem(FGameItem gameItem)
 			mission.MissionObjective.IsEqual(UEnum::GetValueAsName(gameItem.itemCategory)))
 		{
 			mission.Completed = true;
-			// Ping update display
-			return true;
+			missionAccomplished = true;
 		}
 
 		// Check if item mission
@@ -65,34 +68,55 @@ bool UMissionManager::CheckStealItem(FGameItem gameItem)
 			mission.MissionObjective.IsEqual(gameItem.itemName))
 		{
 			mission.Completed = true;
-			UpdateMissionDisplay();
-			return true;
+			missionAccomplished = true;
 		}
+
+		CurrentLevelMission[m] = mission;
 	}
-	// If not found any matching mission
+
+	if (missionAccomplished)
+	{
+		UpdateMissionDisplay();
+		return true;
+	}
+	
 	return false;
 }
 
 bool UMissionManager::CheckDoActionMission(FName ActionName)
 {
-	for (FMission mission : CurrentLevelMission)
+	bool missionAccomplished = false;
+
+	for (int m = 0; m < CurrentLevelMission.Num(); m++)
 	{
-		if (mission.Completed && mission.MissionType != EMissionType::ACTION_BASED)
+		FMission mission = CurrentLevelMission[m];
+
+		if (mission.Completed || mission.MissionType != EMissionType::ACTION_BASED)
 			continue;
-		
+
+
 		// Check if category mission
 		if (mission.MissionObjective.IsEqual(ActionName))
 		{
 			mission.Completed = true;
-			UpdateMissionDisplay();
-			return true;
+			UE_LOGFMT(LogTemp, Log, "MissionObj: {0} | ActionName: {1}", mission.Completed, ActionName);
+
+			missionAccomplished = true;
 		}
+
+		CurrentLevelMission[m] = mission;
 	}
 
-
+	if (missionAccomplished)
+	{
+		 
+		
+		UpdateMissionDisplay();
+		return true;
+	}
 	
-	// If not found any matching mission
 	return false;
+
 }
 
 void UMissionManager::RegisterHUDDisplay(UObject* uObject)
