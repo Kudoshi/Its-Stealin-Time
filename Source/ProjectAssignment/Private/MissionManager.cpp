@@ -99,7 +99,6 @@ bool UMissionManager::CheckDoActionMission(FName ActionName)
 		if (mission.MissionObjective.IsEqual(ActionName))
 		{
 			mission.Completed = true;
-			UE_LOGFMT(LogTemp, Log, "MissionObj: {0} | ActionName: {1}", mission.Completed, ActionName);
 
 			missionAccomplished = true;
 		}
