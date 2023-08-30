@@ -44,10 +44,11 @@ TArray<FMission> UMissionManager::GetCurrentLevelMission()
 }
 
 
-bool UMissionManager::CheckStealItem(FGameItem gameItem)
+TArray<FMission> UMissionManager::CheckStealItem(FGameItem gameItem)
 {
-	bool missionAccomplished = false;
-	
+	TArray<FMission> missionDone = TArray<FMission>();
+
+	// Go through all level mission to check if game item satisfy the mission
 	for (int m = 0; m < CurrentLevelMission.Num(); m++)
 	{
 		FMission mission = CurrentLevelMission[m];
@@ -60,7 +61,7 @@ bool UMissionManager::CheckStealItem(FGameItem gameItem)
 			mission.MissionObjective.IsEqual(UEnum::GetValueAsName(gameItem.itemCategory)))
 		{
 			mission.Completed = true;
-			missionAccomplished = true;
+			missionDone.Add(mission);
 		}
 
 		// Check if item mission
@@ -68,25 +69,27 @@ bool UMissionManager::CheckStealItem(FGameItem gameItem)
 			mission.MissionObjective.IsEqual(gameItem.itemName))
 		{
 			mission.Completed = true;
-			missionAccomplished = true;
+			missionDone.Add(mission);
+
 		}
 
 		CurrentLevelMission[m] = mission;
 	}
 
-	if (missionAccomplished)
+	// Ping update display if completed mission
+	if (missionDone.Num() > 0)
 	{
 		UpdateMissionDisplay();
-		return true;
 	}
-	
-	return false;
+
+	return missionDone;
 }
 
-bool UMissionManager::CheckDoActionMission(FName ActionName)
+TArray<FMission> UMissionManager::CheckDoActionMission(FName ActionName)
 {
-	bool missionAccomplished = false;
+	TArray<FMission> missionDone = TArray<FMission>();
 
+	// Go through all level mission to check if game item satisfy the mission
 	for (int m = 0; m < CurrentLevelMission.Num(); m++)
 	{
 		FMission mission = CurrentLevelMission[m];
@@ -99,22 +102,17 @@ bool UMissionManager::CheckDoActionMission(FName ActionName)
 		if (mission.MissionObjective.IsEqual(ActionName))
 		{
 			mission.Completed = true;
-
-			missionAccomplished = true;
+			missionDone.Add(mission);
 		}
-
 		CurrentLevelMission[m] = mission;
 	}
 
-	if (missionAccomplished)
+	if (missionDone.Num() > 0)
 	{
-		 
-		
 		UpdateMissionDisplay();
-		return true;
 	}
 	
-	return false;
+	return missionDone;
 
 }
 

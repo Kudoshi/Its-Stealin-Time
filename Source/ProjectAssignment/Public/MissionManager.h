@@ -35,10 +35,10 @@ public:
 	TArray<FMission> GetCurrentLevelMission();
 
 	UFUNCTION(BlueprintCallable)
-	bool CheckStealItem(FGameItem gameItem);
+	TArray<FMission> CheckStealItem(FGameItem gameItem);
 
 	UFUNCTION(BlueprintCallable)
-	bool CheckDoActionMission(FName ActionName);
+	TArray<FMission> CheckDoActionMission(FName ActionName);
 
 	UFUNCTION(BlueprintCallable)
 	void RegisterHUDDisplay(UObject* uObject);
