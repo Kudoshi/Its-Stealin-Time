@@ -28,7 +28,7 @@ public:
 
 	// When moving away from current level, call this function to unload current level mission
 	UFUNCTION(BlueprintCallable)
-	bool DeinitializeLevelMissionInStage();
+	void DeinitializeLevelMissionInStage();
 
 	// Gets array of Mission List on the current set level mission
 	UFUNCTION(BlueprintCallable) 

@@ -30,12 +30,10 @@ bool UMissionManager::InitializeLevelMissionInStage(FName Level)
 
 }
 
-bool UMissionManager::DeinitializeLevelMissionInStage()
+void UMissionManager::DeinitializeLevelMissionInStage()
 {
 	CurrentLevelMission = TArray<FMission>();
 	HUDDisplay = nullptr;
-	
-	return true;
 }
 
 TArray<FMission> UMissionManager::GetCurrentLevelMission()
